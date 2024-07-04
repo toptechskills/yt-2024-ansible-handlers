@@ -1,0 +1,66 @@
+- name: Basic handlers workflow
+  hosts: all
+  become: true
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      notify: Third handler
+
+    - name: Second handler
+      ansible.builtin.debug:
+        msg: Second handler
+      changed_when: true
+
+    - name: Third handler
+      ansible.builtin.debug:
+        msg: Third handler
+      changed_when: true
+  tasks:
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        update_cache: true
+
+    - name: Update default site config
+      ansible.builtin.copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+            listen 80;
+
+            location / {
+              return 200 "Hello, World!\n";
+            }
+          }
+      notify:
+        - Reload nginx
+        - Second handler
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+    - name: Update default site config again
+      ansible.builtin.copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+            listen 80;
+
+            location / {
+              return 200 "Hello, Ansible!\n";
+            }
+          }
+      notify: Reload nginx
+
+    - name: Additional task in first play
+      ansible.builtin.debug:
+        msg: Do something at the end of first play
+
+- name: Second play
+  hosts: all
+  tasks:
+    - name: Task from second play
+      ansible.builtin.debug:
+        msg: Do something in second play

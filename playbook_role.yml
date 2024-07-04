@@ -1,0 +1,6 @@
+- name: Basic handlers workflow in roles
+  hosts: all
+  become: true
+  roles:
+    - my_role
+
