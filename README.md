@@ -1,6 +1,6 @@
 # Code for Ansible YouTube video: Ansible Handlers Tutorial - How to Use Handlers in Your Roles and Playbooks
 
-Video on YouTube (TBC). In the video I show how you how you can use handlers in your playbooks and roles, as well as a rapid-fire deep dive of common handler questions and gotchas.
+[Video on YouTube](https://youtu.be/rl8S5QoGvlM). In the video I show how you how you can use handlers in your playbooks and roles, as well as a rapid-fire deep dive of common handler questions and gotchas.
 
 Update the `Vagrantfile` to point at your SSH public key:
 
